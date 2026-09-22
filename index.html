@@ -1,0 +1,1680 @@
+
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>Homework Flow</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&family=Prompt:wght@300;400;500;600&display=swap');
+
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
+:root{
+  --bg:#f6f7fb;
+  --card:rgba(255,255,255,.78);
+  --text:#171827;
+  --muted:#77798b;
+  --primary:#7567ff;
+  --primary2:#a68cff;
+  --danger:#ff5f7e;
+  --success:#25c996;
+  --shadow:0 20px 60px rgba(54,45,120,.12);
+}
+
+body{
+  font-family:Prompt,Kanit,sans-serif;
+  background:
+    radial-gradient(circle at 10% 10%,rgba(117,103,255,.18),transparent 30%),
+    radial-gradient(circle at 90% 20%,rgba(166,140,255,.18),transparent 28%),
+    linear-gradient(135deg,#fafaff,#f2f3fa);
+  min-height:100vh;
+  color:var(--text);
+}
+
+/* LOADING */
+
+#loading{
+  position:fixed;
+  inset:0;
+  z-index:9999;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+  background:
+    radial-gradient(circle at center,#8075ff 0%,#5a4de4 35%,#211d58 100%);
+  color:white;
+  transition:.7s;
+}
+
+.loaderLogo{
+  width:90px;
+  height:90px;
+  border-radius:28px;
+  display:grid;
+  place-items:center;
+  background:rgba(255,255,255,.15);
+  backdrop-filter:blur(20px);
+  font-size:38px;
+  box-shadow:0 20px 70px rgba(0,0,0,.25);
+  animation:float 2s infinite ease-in-out;
+}
+
+#loading h1{
+  margin-top:25px;
+  font-size:28px;
+}
+
+#loading p{
+  opacity:.7;
+  margin-top:5px;
+}
+
+.loader{
+  width:180px;
+  height:4px;
+  background:rgba(255,255,255,.18);
+  border-radius:20px;
+  overflow:hidden;
+  margin-top:25px;
+}
+
+.loader span{
+  display:block;
+  height:100%;
+  width:40%;
+  background:white;
+  border-radius:20px;
+  animation:load 1.5s infinite;
+}
+
+@keyframes load{
+  0%{transform:translateX(-100%)}
+  100%{transform:translateX(450%)}
+}
+
+@keyframes float{
+  50%{transform:translateY(-10px)}
+}
+
+/* GENERAL */
+
+.hidden{
+  display:none!important;
+}
+
+.screen{
+  min-height:100vh;
+  padding:25px;
+}
+
+/* CAPTCHA */
+
+#captchaPage{
+  display:none;
+  align-items:center;
+  justify-content:center;
+}
+
+.captchaCard{
+  width:min(440px,100%);
+  padding:38px;
+  border-radius:32px;
+  background:var(--card);
+  backdrop-filter:blur(30px);
+  box-shadow:var(--shadow);
+  text-align:center;
+}
+
+.robotIcon{
+  font-size:60px;
+  margin-bottom:15px;
+}
+
+.captchaCard h1{
+  font-size:27px;
+}
+
+.captchaCard p{
+  color:var(--muted);
+  margin:10px 0 25px;
+}
+
+.robotBox{
+  padding:18px;
+  border:1px solid #ddddec;
+  border-radius:18px;
+  text-align:left;
+  margin-bottom:18px;
+  background:white;
+}
+
+.robotBox label{
+  display:flex;
+  gap:12px;
+  align-items:center;
+  cursor:pointer;
+}
+
+.robotBox input{
+  width:22px;
+  height:22px;
+  accent-color:var(--primary);
+}
+
+/* LOGIN */
+
+#loginPage{
+  display:none;
+  align-items:center;
+  justify-content:center;
+}
+
+.loginCard{
+  width:min(450px,100%);
+  background:var(--card);
+  backdrop-filter:blur(30px);
+  border-radius:34px;
+  padding:40px;
+  box-shadow:var(--shadow);
+}
+
+.brand{
+  text-align:center;
+  margin-bottom:30px;
+}
+
+.brand .icon{
+  width:76px;
+  height:76px;
+  margin:auto;
+  border-radius:25px;
+  display:grid;
+  place-items:center;
+  font-size:35px;
+  background:linear-gradient(135deg,var(--primary),var(--primary2));
+  color:white;
+  box-shadow:0 15px 35px rgba(117,103,255,.35);
+}
+
+.brand h1{
+  margin-top:18px;
+  font-size:29px;
+}
+
+.brand p{
+  color:var(--muted);
+}
+
+.input{
+  width:100%;
+  border:1px solid #e5e5ef;
+  background:white;
+  padding:15px 17px;
+  border-radius:15px;
+  outline:none;
+  font:inherit;
+  transition:.2s;
+}
+
+.input:focus{
+  border-color:var(--primary);
+  box-shadow:0 0 0 4px rgba(117,103,255,.1);
+}
+
+.btn{
+  border:none;
+  cursor:pointer;
+  font:inherit;
+  border-radius:15px;
+  padding:14px 18px;
+  transition:.2s;
+}
+
+.btn:hover{
+  transform:translateY(-2px);
+}
+
+.btnPrimary{
+  width:100%;
+  color:white;
+  background:linear-gradient(135deg,var(--primary),var(--primary2));
+  box-shadow:0 12px 25px rgba(117,103,255,.25);
+}
+
+/* DASHBOARD */
+
+#app{
+  display:none;
+}
+
+.nav{
+  max-width:1250px;
+  margin:auto;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:15px;
+  margin-bottom:25px;
+}
+
+.navBrand{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.navLogo{
+  width:50px;
+  height:50px;
+  display:grid;
+  place-items:center;
+  border-radius:17px;
+  color:white;
+  background:linear-gradient(135deg,var(--primary),var(--primary2));
+  font-size:22px;
+}
+
+.navBrand h2{
+  font-size:21px;
+}
+
+.navBrand span{
+  color:var(--muted);
+  font-size:12px;
+  display:block;
+}
+
+.userPill{
+  background:white;
+  padding:9px 15px;
+  border-radius:50px;
+  box-shadow:0 8px 25px rgba(0,0,0,.06);
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+
+.logout{
+  border:none;
+  background:#fff0f3;
+  color:#e44c69;
+  border-radius:12px;
+  padding:9px 13px;
+  cursor:pointer;
+}
+
+/* HERO */
+
+.hero{
+  max-width:1250px;
+  margin:auto;
+  padding:32px;
+  border-radius:32px;
+  background:linear-gradient(135deg,#6256ec,#9c87ff);
+  color:white;
+  box-shadow:0 25px 60px rgba(93,78,220,.25);
+  position:relative;
+  overflow:hidden;
+}
+
+.hero:after{
+  content:"";
+  position:absolute;
+  width:300px;
+  height:300px;
+  border-radius:50%;
+  background:rgba(255,255,255,.08);
+  right:-100px;
+  top:-130px;
+}
+
+.hero h1{
+  font-size:34px;
+  position:relative;
+  z-index:2;
+}
+
+.hero p{
+  opacity:.78;
+  position:relative;
+  z-index:2;
+}
+
+.countdown{
+  margin-top:20px;
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+
+.timeBox{
+  min-width:82px;
+  padding:13px;
+  border-radius:18px;
+  background:rgba(255,255,255,.13);
+  backdrop-filter:blur(10px);
+  text-align:center;
+}
+
+.timeBox strong{
+  display:block;
+  font-size:24px;
+}
+
+.timeBox span{
+  font-size:11px;
+  opacity:.7;
+}
+
+/* STATS */
+
+.stats{
+  max-width:1250px;
+  margin:20px auto;
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:15px;
+}
+
+.stat{
+  background:rgba(255,255,255,.75);
+  backdrop-filter:blur(20px);
+  border:1px solid rgba(255,255,255,.8);
+  padding:20px;
+  border-radius:23px;
+  box-shadow:0 10px 35px rgba(0,0,0,.05);
+}
+
+.stat small{
+  color:var(--muted);
+}
+
+.stat strong{
+  display:block;
+  font-size:29px;
+  margin-top:5px;
+}
+
+/* TOOLBAR */
+
+.toolbar{
+  max-width:1250px;
+  margin:20px auto;
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+
+.search{
+  flex:1;
+  min-width:220px;
+}
+
+/* HOMEWORK */
+
+.homeworkGrid{
+  max-width:1250px;
+  margin:auto;
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(290px,1fr));
+  gap:17px;
+}
+
+.hw{
+  background:rgba(255,255,255,.8);
+  backdrop-filter:blur(20px);
+  border:1px solid rgba(255,255,255,.9);
+  padding:22px;
+  border-radius:25px;
+  box-shadow:0 12px 35px rgba(0,0,0,.055);
+  position:relative;
+  transition:.25s;
+}
+
+.hw:hover{
+  transform:translateY(-4px);
+}
+
+.hw.done{
+  opacity:.65;
+}
+
+.hw.done h3{
+  text-decoration:line-through;
+}
+
+.tag{
+  display:inline-block;
+  padding:5px 10px;
+  background:#eeeaff;
+  color:#6558db;
+  border-radius:50px;
+  font-size:12px;
+  margin-bottom:10px;
+}
+
+.hw h3{
+  font-size:20px;
+}
+
+.description{
+  color:#66687a;
+  margin:8px 0 15px;
+  line-height:1.6;
+  min-height:45px;
+}
+
+.deadline{
+  display:flex;
+  align-items:center;
+  gap:7px;
+  color:#6d6e7d;
+  font-size:13px;
+}
+
+.deadline.warning{
+  color:#e79820;
+}
+
+.deadline.danger{
+  color:#e84e6c;
+}
+
+.hwActions{
+  display:flex;
+  gap:8px;
+  margin-top:17px;
+}
+
+.smallBtn{
+  flex:1;
+  padding:10px;
+  border:none;
+  border-radius:12px;
+  cursor:pointer;
+  font:inherit;
+  background:#f1f1f7;
+}
+
+.smallBtn.complete{
+  background:#e6faf4;
+  color:#169e79;
+}
+
+.smallBtn.delete{
+  background:#fff0f3;
+  color:#e44c69;
+}
+
+/* MODAL */
+
+.modal{
+  position:fixed;
+  inset:0;
+  z-index:5000;
+  background:rgba(20,20,35,.45);
+  backdrop-filter:blur(8px);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+}
+
+.modalCard{
+  width:min(500px,100%);
+  background:white;
+  border-radius:28px;
+  padding:28px;
+  box-shadow:0 30px 80px rgba(0,0,0,.25);
+}
+
+.modalCard h2{
+  margin-bottom:18px;
+}
+
+.formGroup{
+  margin-bottom:14px;
+}
+
+.formGroup label{
+  font-size:13px;
+  color:#666;
+  display:block;
+  margin-bottom:6px;
+}
+
+.modalButtons{
+  display:flex;
+  gap:10px;
+  margin-top:18px;
+}
+
+.modalButtons button{
+  flex:1;
+}
+
+/* POPUP */
+
+.notice{
+  position:fixed;
+  right:20px;
+  bottom:20px;
+  z-index:7000;
+  width:min(380px,calc(100% - 40px));
+  background:white;
+  border-radius:22px;
+  padding:20px;
+  box-shadow:0 20px 60px rgba(0,0,0,.18);
+  display:none;
+  animation:slideIn .4s;
+}
+
+.noticeTitle{
+  font-weight:600;
+  margin-bottom:5px;
+}
+
+.notice p{
+  color:#777;
+  font-size:13px;
+  line-height:1.6;
+}
+
+@keyframes slideIn{
+  from{
+    transform:translateY(30px);
+    opacity:0;
+  }
+  to{
+    transform:none;
+    opacity:1;
+  }
+}
+
+/* EMPTY */
+
+.empty{
+  max-width:600px;
+  margin:70px auto;
+  text-align:center;
+  color:var(--muted);
+}
+
+.empty div{
+  font-size:55px;
+  margin-bottom:10px;
+}
+
+/* MOBILE */
+
+@media(max-width:750px){
+  .screen{
+    padding:15px;
+  }
+
+  .nav{
+    align-items:flex-start;
+  }
+
+  .userPill{
+    font-size:12px;
+  }
+
+  .logout{
+    font-size:12px;
+  }
+
+  .hero{
+    padding:25px;
+  }
+
+  .hero h1{
+    font-size:27px;
+  }
+
+  .stats{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  .timeBox{
+    min-width:65px;
+  }
+
+  .timeBox strong{
+    font-size:20px;
+  }
+
+  .loginCard,
+  .captchaCard{
+    padding:27px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<!-- LOADING -->
+<div id="loading">
+  <div class="loaderLogo">📚</div>
+  <h1>กำลังดำเนินการ...</h1>
+  <p>กำลังเตรียมระบบการบ้านของคุณ</p>
+  <div class="loader"><span></span></div>
+</div>
+
+<!-- CAPTCHA -->
+<div id="captchaPage" class="screen">
+  <div class="captchaCard">
+    <div class="robotIcon">🤖</div>
+    <h1>คุณเป็นมนุษย์หรือไม่?</h1>
+    <p>ยืนยันก่อนเข้าสู่ระบบการบ้าน</p>
+
+    <div class="robotBox">
+      <label>
+        <input type="checkbox" id="humanCheck">
+        <span>ฉันเป็นมนุษย์ ไม่ใช่หุ่นยนต์</span>
+      </label>
+    </div>
+
+    <button class="btn btnPrimary" onclick="verifyHuman()">
+      ยืนยันและเข้าสู่ระบบ
+    </button>
+  </div>
+</div>
+
+<!-- LOGIN -->
+<div id="loginPage" class="screen">
+  <div class="loginCard">
+
+    <div class="brand">
+      <div class="icon">📚</div>
+      <h1>Homework Flow</h1>
+      <p>ระบบแจ้งเตือนและสรุปการบ้าน</p>
+    </div>
+
+    <label style="font-size:13px;color:#666">
+      ชื่อเล่น
+    </label>
+
+    <input
+      id="nickname"
+      class="input"
+      style="margin-top:7px"
+      placeholder="กรอกชื่อเล่นของคุณ"
+      autocomplete="off"
+    >
+
+    <button
+      class="btn btnPrimary"
+      style="margin-top:15px"
+      onclick="login()"
+    >
+      เข้าสู่ระบบ →
+    </button>
+
+    <p style="text-align:center;color:#999;font-size:12px;margin-top:18px">
+      ผู้ที่สามารถเข้าใช้งานได้: ฮังเล • นิวตัน • อุ้มบุญ
+    </p>
+
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app">
+
+  <main class="screen">
+
+    <nav class="nav">
+
+      <div class="navBrand">
+        <div class="navLogo">📚</div>
+        <div>
+          <h2>Homework Flow</h2>
+          <span>ระบบจัดการการบ้าน</span>
+        </div>
+      </div>
+
+      <div style="display:flex;gap:8px;align-items:center">
+        <div class="userPill">
+          👤 <span id="currentUser"></span>
+        </div>
+        <button class="logout" onclick="logout()">ออก</button>
+      </div>
+
+    </nav>
+
+    <section class="hero">
+      <h1>สวัสดี 👋 <span id="helloUser"></span></h1>
+      <p>จัดการการบ้านของคุณให้ทันทุกกำหนดส่ง</p>
+
+      <div class="countdown">
+
+        <div class="timeBox">
+          <strong id="days">00</strong>
+          <span>วัน</span>
+        </div>
+
+        <div class="timeBox">
+          <strong id="hours">00</strong>
+          <span>ชั่วโมง</span>
+        </div>
+
+        <div class="timeBox">
+          <strong id="minutes">00</strong>
+          <span>นาที</span>
+        </div>
+
+        <div class="timeBox">
+          <strong id="seconds">00</strong>
+          <span>วินาที</span>
+        </div>
+
+      </div>
+    </section>
+
+    <section class="stats">
+
+      <div class="stat">
+        <small>การบ้านทั้งหมด</small>
+        <strong id="totalCount">0</strong>
+      </div>
+
+      <div class="stat">
+        <small>ยังไม่ส่ง</small>
+        <strong id="pendingCount">0</strong>
+      </div>
+
+      <div class="stat">
+        <small>ส่งแล้ว</small>
+        <strong id="doneCount">0</strong>
+      </div>
+
+      <div class="stat">
+        <small>ใกล้ถึงกำหนด</small>
+        <strong id="urgentCount">0</strong>
+      </div>
+
+    </section>
+
+    <div class="toolbar">
+
+      <input
+        class="input search"
+        id="search"
+        placeholder="🔎 ค้นหาการบ้านหรือวิชา..."
+        oninput="render()"
+      >
+
+      <button class="btn btnPrimary" style="width:auto" onclick="openModal()">
+        ＋ เพิ่มการบ้าน
+      </button>
+
+    </div>
+
+    <section id="homeworkGrid" class="homeworkGrid"></section>
+
+  </main>
+
+</div>
+
+<!-- MODAL -->
+<div id="modal" class="modal">
+
+  <div class="modalCard">
+
+    <h2 id="modalTitle">เพิ่มการบ้าน</h2>
+
+    <div class="formGroup">
+      <label>ชื่อการบ้าน</label>
+      <input id="hwTitle" class="input" placeholder="เช่น ทำแบบฝึกหัดหน้า 25">
+    </div>
+
+    <div class="formGroup">
+      <label>วิชา</label>
+      <input id="hwSubject" class="input" placeholder="เช่น คณิตศาสตร์">
+    </div>
+
+    <div class="formGroup">
+      <label>รายละเอียด</label>
+      <textarea
+        id="hwDescription"
+        class="input"
+        rows="3"
+        placeholder="รายละเอียดเพิ่มเติม..."
+      ></textarea>
+    </div>
+
+    <div class="formGroup">
+      <label>นัดหมายส่ง</label>
+      <input id="hwDeadline" class="input" type="datetime-local">
+    </div>
+
+    <div class="formGroup">
+      <label>อีเมลสำหรับการแจ้งเตือน (เตรียมไว้สำหรับระบบอีเมล)</label>
+      <input
+        id="hwEmail"
+        class="input"
+        type="email"
+        placeholder="example@email.com"
+      >
+    </div>
+
+    <div class="modalButtons">
+
+      <button
+        class="btn"
+        style="background:#f1f1f7"
+        onclick="closeModal()"
+      >
+        ยกเลิก
+      </button>
+
+      <button
+        class="btn btnPrimary"
+        onclick="saveHomework()"
+      >
+        บันทึก
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+<!-- NOTICE -->
+<div id="notice" class="notice">
+
+  <div class="noticeTitle" id="noticeTitle">
+    🔔 แจ้งเตือน
+  </div>
+
+  <p id="noticeText"></p>
+
+</div>
+
+
+<script>
+
+const ALLOWED_USERS = [
+  "ฮังเล",
+  "นิวตัน",
+  "อุ้มบุญ"
+];
+
+let currentUser = "";
+let editId = null;
+
+
+/* =========================
+   START
+========================= */
+
+window.addEventListener("load",()=>{
+
+  setTimeout(()=>{
+
+    document.getElementById("loading").style.display="none";
+
+    if(localStorage.getItem("humanVerified")==="yes"){
+      showLogin();
+    }else{
+      document.getElementById("captchaPage").style.display="flex";
+    }
+
+  },1800);
+
+});
+
+
+/* =========================
+   CAPTCHA
+========================= */
+
+function verifyHuman(){
+
+  if(!document.getElementById("humanCheck").checked){
+
+    showNotice(
+      "⚠️ กรุณายืนยัน",
+      "กรุณาติ๊กช่องว่าคุณเป็นมนุษย์ก่อนเข้าสู่ระบบ"
+    );
+
+    return;
+  }
+
+  localStorage.setItem("humanVerified","yes");
+
+  document.getElementById("captchaPage").style.display="none";
+
+  showLogin();
+}
+
+
+function showLogin(){
+
+  document.getElementById("loginPage").style.display="flex";
+
+}
+
+
+/* =========================
+   LOGIN
+========================= */
+
+function login(){
+
+  const name =
+    document.getElementById("nickname").value.trim();
+
+  const found =
+    ALLOWED_USERS.find(
+      x=>x.toLowerCase()===name.toLowerCase()
+    );
+
+  if(!found){
+
+    showNotice(
+      "❌ ไม่สามารถเข้าสู่ระบบ",
+      "ชื่อเล่นนี้ไม่มีสิทธิ์เข้าใช้งานระบบ"
+    );
+
+    return;
+  }
+
+  currentUser=found;
+
+  localStorage.setItem(
+    "homework_current_user",
+    currentUser
+  );
+
+  document.getElementById("loginPage").style.display="none";
+
+  document.getElementById("app").style.display="block";
+
+  document.getElementById("currentUser").textContent=currentUser;
+  document.getElementById("helloUser").textContent=currentUser;
+
+  cleanupCompleted();
+
+  render();
+
+  checkNotifications();
+
+  showDailyResetNotice();
+
+}
+
+
+/* =========================
+   LOGOUT
+========================= */
+
+function logout(){
+
+  localStorage.removeItem("homework_current_user");
+
+  location.reload();
+
+}
+
+
+/* =========================
+   STORAGE
+========================= */
+
+function getData(){
+
+  const data =
+    localStorage.getItem("homework_data");
+
+  if(!data) return [];
+
+  try{
+    return JSON.parse(data);
+  }catch{
+    return [];
+  }
+
+}
+
+
+function saveData(data){
+
+  localStorage.setItem(
+    "homework_data",
+    JSON.stringify(data)
+  );
+
+}
+
+
+/* =========================
+   ADD / EDIT
+========================= */
+
+function openModal(id=null){
+
+  editId=id;
+
+  document.getElementById("modal").style.display="flex";
+
+  if(id){
+
+    const item =
+      getData().find(x=>x.id===id);
+
+    if(!item) return;
+
+    document.getElementById("modalTitle").textContent=
+      "แก้ไขการบ้าน";
+
+    document.getElementById("hwTitle").value=item.title;
+    document.getElementById("hwSubject").value=item.subject;
+    document.getElementById("hwDescription").value=item.description;
+    document.getElementById("hwDeadline").value=item.deadline || "";
+    document.getElementById("hwEmail").value=item.email || "";
+
+  }else{
+
+    document.getElementById("modalTitle").textContent=
+      "เพิ่มการบ้าน";
+
+    document.getElementById("hwTitle").value="";
+    document.getElementById("hwSubject").value="";
+    document.getElementById("hwDescription").value="";
+    document.getElementById("hwDeadline").value="";
+    document.getElementById("hwEmail").value="";
+
+  }
+
+}
+
+
+function closeModal(){
+
+  document.getElementById("modal").style.display="none";
+
+  editId=null;
+
+}
+
+
+function saveHomework(){
+
+  const title=
+    document.getElementById("hwTitle").value.trim();
+
+  const subject=
+    document.getElementById("hwSubject").value.trim();
+
+  const description=
+    document.getElementById("hwDescription").value.trim();
+
+  const deadline=
+    document.getElementById("hwDeadline").value;
+
+  const email=
+    document.getElementById("hwEmail").value.trim();
+
+  if(!title || !subject || !deadline){
+
+    showNotice(
+      "⚠️ ข้อมูลไม่ครบ",
+      "กรุณากรอกชื่อการบ้าน วิชา และวันนัดหมายส่ง"
+    );
+
+    return;
+  }
+
+  let data=getData();
+
+  if(editId){
+
+    const index=
+      data.findIndex(x=>x.id===editId);
+
+    if(index!==-1){
+
+      data[index].title=title;
+      data[index].subject=subject;
+      data[index].description=description;
+      data[index].deadline=deadline;
+      data[index].email=email;
+
+    }
+
+  }else{
+
+    data.push({
+
+      id:Date.now(),
+
+      title,
+      subject,
+      description,
+      deadline,
+      email,
+
+      completed:false,
+
+      createdAt:new Date().toISOString()
+
+    });
+
+  }
+
+  saveData(data);
+
+  closeModal();
+
+  render();
+
+  showNotice(
+    "✅ บันทึกแล้ว",
+    "ระบบบันทึกการบ้านของคุณเรียบร้อย"
+  );
+
+}
+
+
+/* =========================
+   DELETE
+========================= */
+
+function deleteHomework(id){
+
+  if(!confirm("ต้องการลบการบ้านนี้หรือไม่?")) return;
+
+  let data=getData();
+
+  data=data.filter(x=>x.id!==id);
+
+  saveData(data);
+
+  render();
+
+}
+
+
+/* =========================
+   COMPLETE
+========================= */
+
+function toggleComplete(id){
+
+  const data=getData();
+
+  const item=data.find(x=>x.id===id);
+
+  if(!item) return;
+
+  item.completed=!item.completed;
+
+  saveData(data);
+
+  render();
+
+}
+
+
+/* =========================
+   DAILY RESET
+=========================
+
+   ลบเฉพาะงานที่ "ส่งแล้ว"
+   และทำเมื่อวันเปลี่ยน
+========================= */
+
+function cleanupCompleted(){
+
+  const today=
+    new Date().toISOString().slice(0,10);
+
+  const lastReset=
+    localStorage.getItem("homework_last_reset");
+
+  if(lastReset===today) return;
+
+  let data=getData();
+
+  const before=data.length;
+
+  data=data.filter(item=>!item.completed);
+
+  saveData(data);
+
+  localStorage.setItem(
+    "homework_last_reset",
+    today
+  );
+
+  if(before!==data.length){
+
+    setTimeout(()=>{
+
+      showNotice(
+        "♻️ รีเซ็ตข้อมูลประจำวัน",
+        `ระบบลบการบ้านที่ส่งแล้ว ${before-data.length} รายการออกให้อัตโนมัติ`
+      );
+
+    },1000);
+
+  }
+
+}
+
+
+/* =========================
+   DAILY POPUP
+========================= */
+
+function showDailyResetNotice(){
+
+  const today=
+    new Date().toISOString().slice(0,10);
+
+  const shown=
+    localStorage.getItem("homework_notice_date");
+
+  if(shown===today) return;
+
+  localStorage.setItem(
+    "homework_notice_date",
+    today
+  );
+
+  setTimeout(()=>{
+
+    showNotice(
+      "♻️ ระบบรีเซ็ตข้อมูลทุกวัน",
+      "เมื่อเปลี่ยนวัน ระบบจะลบเฉพาะการบ้านที่ทำเครื่องหมายว่า “ส่งแล้ว” ส่วนงานที่ยังไม่ส่งจะยังคงอยู่"
+    );
+
+  },1200);
+
+}
+
+
+/* =========================
+   RENDER
+========================= */
+
+function render(){
+
+  const grid=
+    document.getElementById("homeworkGrid");
+
+  const search=
+    document.getElementById("search").value
+      .toLowerCase();
+
+  let data=getData();
+
+  const filtered=
+    data.filter(item=>
+      item.title.toLowerCase().includes(search) ||
+      item.subject.toLowerCase().includes(search) ||
+      item.description.toLowerCase().includes(search)
+    );
+
+  updateStats(data);
+
+  if(!filtered.length){
+
+    grid.innerHTML=`
+      <div class="empty" style="grid-column:1/-1">
+        <div>📚</div>
+        <h2>ยังไม่มีการบ้าน</h2>
+        <p>กด “เพิ่มการบ้าน” เพื่อเริ่มต้นจัดการงานของคุณ</p>
+      </div>
+    `;
+
+    return;
+  }
+
+  filtered.sort(
+    (a,b)=>
+      new Date(a.deadline)-new Date(b.deadline)
+  );
+
+  grid.innerHTML=
+    filtered.map(item=>{
+
+      const time=
+        getDeadlineStatus(item.deadline);
+
+      return `
+
+      <article class="hw ${item.completed?'done':''}">
+
+        <span class="tag">
+          ${escapeHTML(item.subject)}
+        </span>
+
+        <h3>
+          ${escapeHTML(item.title)}
+        </h3>
+
+        <p class="description">
+          ${escapeHTML(item.description || "ไม่มีรายละเอียด")}
+        </p>
+
+        <div class="deadline ${time.className}">
+          📅 ${formatDate(item.deadline)}
+        </div>
+
+        <div style="margin-top:7px;font-size:12px;color:#999">
+          ${time.text}
+        </div>
+
+        <div class="hwActions">
+
+          <button
+            class="smallBtn complete"
+            onclick="toggleComplete(${item.id})"
+          >
+            ${item.completed ? "↩️ ยังไม่ส่ง" : "✓ ส่งแล้ว"}
+          </button>
+
+          <button
+            class="smallBtn"
+            onclick="openModal(${item.id})"
+          >
+            ✏️ แก้ไข
+          </button>
+
+          <button
+            class="smallBtn delete"
+            onclick="deleteHomework(${item.id})"
+          >
+            🗑️
+          </button>
+
+        </div>
+
+      </article>
+
+      `;
+
+    }).join("");
+
+}
+
+
+/* =========================
+   STATS
+========================= */
+
+function updateStats(data){
+
+  const total=data.length;
+
+  const done=
+    data.filter(x=>x.completed).length;
+
+  const pending=total-done;
+
+  const urgent=
+    data.filter(x=>
+      !x.completed &&
+      getHoursLeft(x.deadline)<=24 &&
+      getHoursLeft(x.deadline)>=0
+    ).length;
+
+  document.getElementById("totalCount").textContent=total;
+  document.getElementById("pendingCount").textContent=pending;
+  document.getElementById("doneCount").textContent=done;
+  document.getElementById("urgentCount").textContent=urgent;
+
+}
+
+
+/* =========================
+   DEADLINE
+========================= */
+
+function getHoursLeft(deadline){
+
+  return(
+    new Date(deadline)-new Date()
+  )/(1000*60*60);
+
+}
+
+
+function getDeadlineStatus(deadline){
+
+  const hours=getHoursLeft(deadline);
+
+  if(hours<0){
+
+    return{
+      className:"danger",
+      text:"เลยกำหนดแล้ว"
+    };
+
+  }
+
+  if(hours<=24){
+
+    return{
+      className:"danger",
+      text:"⚠️ ใกล้ถึงกำหนดส่ง"
+    };
+
+  }
+
+  if(hours<=72){
+
+    return{
+      className:"warning",
+      text:"⏰ กำลังจะถึงกำหนด"
+    };
+
+  }
+
+  return{
+    className:"",
+    text:"ยังมีเวลา"
+  };
+
+}
+
+
+function formatDate(date){
+
+  return new Date(date).toLocaleString(
+    "th-TH",
+    {
+      dateStyle:"medium",
+      timeStyle:"short"
+    }
+  );
+
+}
+
+
+/* =========================
+   NOTIFICATIONS
+========================= */
+
+function checkNotifications(){
+
+  const data=getData();
+
+  data.forEach(item=>{
+
+    if(item.completed) return;
+
+    const hours=getHoursLeft(item.deadline);
+
+    if(hours>0 && hours<=24){
+
+      setTimeout(()=>{
+
+        showNotice(
+          "⏰ ใกล้ถึงกำหนดส่ง",
+          `${item.title} — เหลือเวลาไม่ถึง 24 ชั่วโมง`
+        );
+
+      },1500);
+
+    }
+
+  });
+
+}
+
+
+/* =========================
+   COUNTDOWN TO NEXT DEADLINE
+========================= */
+
+function updateCountdown(){
+
+  const data=
+    getData()
+      .filter(x=>!x.completed)
+      .filter(x=>new Date(x.deadline)>new Date())
+      .sort(
+        (a,b)=>
+          new Date(a.deadline)-new Date(b.deadline)
+      );
+
+  if(!data.length){
+
+    ["days","hours","minutes","seconds"]
+      .forEach(id=>
+        document.getElementById(id).textContent="00"
+      );
+
+    return;
+  }
+
+  const target=
+    new Date(data[0].deadline);
+
+  const diff=
+    target-new Date();
+
+  const days=
+    Math.floor(diff/86400000);
+
+  const hours=
+    Math.floor(diff%86400000/3600000);
+
+  const minutes=
+    Math.floor(diff%3600000/60000);
+
+  const seconds=
+    Math.floor(diff%60000/1000);
+
+  document.getElementById("days").textContent=
+    String(days).padStart(2,"0");
+
+  document.getElementById("hours").textContent=
+    String(hours).padStart(2,"0");
+
+  document.getElementById("minutes").textContent=
+    String(minutes).padStart(2,"0");
+
+  document.getElementById("seconds").textContent=
+    String(seconds).padStart(2,"0");
+
+}
+
+
+setInterval(updateCountdown,1000);
+
+
+/* =========================
+   NOTICE
+========================= */
+
+let noticeTimer;
+
+function showNotice(title,text){
+
+  const notice=
+    document.getElementById("notice");
+
+  document.getElementById("noticeTitle").textContent=title;
+  document.getElementById("noticeText").textContent=text;
+
+  notice.style.display="block";
+
+  clearTimeout(noticeTimer);
+
+  noticeTimer=setTimeout(()=>{
+
+    notice.style.display="none";
+
+  },6000);
+
+}
+
+
+/* =========================
+   ESCAPE
+========================= */
+
+function escapeHTML(str){
+
+  return String(str)
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+
+}
+
+
+/* =========================
+   RESTORE LOGIN
+========================= */
+
+window.addEventListener("load",()=>{
+
+  const saved=
+    localStorage.getItem(
+      "homework_current_user"
+    );
+
+  if(saved && ALLOWED_USERS.includes(saved)){
+
+    currentUser=saved;
+
+    setTimeout(()=>{
+
+      document.getElementById("loading").style.display="none";
+      document.getElementById("captchaPage").style.display="none";
+      document.getElementById("loginPage").style.display="none";
+      document.getElementById("app").style.display="block";
+
+      document.getElementById("currentUser").textContent=currentUser;
+      document.getElementById("helloUser").textContent=currentUser;
+
+      cleanupCompleted();
+      render();
+
+    },1800);
+
+  }
+
+});
+
+</script>
+
+</body>
+</html>
+
